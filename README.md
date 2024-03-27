@@ -1,4 +1,4 @@
-# Operation Mango \[[Paper PDF](assets/operation-mango.pdf)\] 
+# Operation Mango \[[Paper PDF](https://wilgibbs.com/papers/mango_usenix24.pdf)\] 
 
 ## Fast taint-style static analysis based vulnerability discovery
 
