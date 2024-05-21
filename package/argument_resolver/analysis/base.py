@@ -274,6 +274,12 @@ class ScriptBase:
             if func_name in self.project.kb.functions:
                 self.project.kb.functions[func_name].prototype = prototype
 
+            # 여기로 주소를 넘겨서 fucntion name symbol 넣어주기?
+            if 0x4011db in self.project.kb.functions:
+                #self.project.kb.functions[].prototype = prototype
+                self.project.kb.functions[0x4011db].name = 'sangjun'
+
+
     def load_excluded_functions(
         self, excluded_functions: List[str] = None
     ) -> Dict[Function, Set[Tuple]]:

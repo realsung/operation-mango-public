@@ -263,3 +263,33 @@ class StdlibHandlers(HandlerBase):
     @HandlerBase.tag_parameter_definitions
     def handle_httpSetEnv(self, state: "ReachingDefinitionsState", stored_func: StoredFunction):
         return self._setenv(state, stored_func)
+
+    
+    # append RDA for address(stripped)
+    @HandlerBase.returns
+    @HandlerBase.tag_parameter_definitions
+    def handle_sangjun(self, state: "ReachingDefinitionsState", stored_func: StoredFunction):
+        """
+        Process the impact of the function's execution on register and memory definitions and uses.
+        .. sourcecode:: c
+            char *getenv(const char *name);
+        :param state:    Register and memory definitions and uses
+        :param codeloc:  Code location of the call
+        """
+        self.log.critical("RDA: getenv(), ins_addr=%#x", stored_func.code_loc.ins_addr)
+        #return False, state, None
+        self.log.debug("RDA: getenv(), ins_addr=%#x", stored_func.code_loc.ins_addr)
+
+        return_values = MultiValues()
+
+        addr = state.heap_allocator.allocate(self.MAX_READ_SIZE)
+        name="sangjun"
+        buf_bvs = claripy.BVS(f"{stored_func.name}({name})@0x{stored_func.code_loc.ins_addr:x}", self.MAX_READ_SIZE*8)
+        self.log.critical(f"{stored_func.name}({name})@0x{stored_func.code_loc.ins_addr:x}")
+        buf_bvs.variables = frozenset(set(buf_bvs.variables) | {"TOP"})
+        atom = MemoryLocation(addr, buf_bvs.size()//8, endness=Endness.BE)
+        ret_val = MultiValues(Utils.gen_heap_address(addr.value, state.arch))
+        stored_func.depends(atom, *stored_func.atoms, value=buf_bvs)
+        return_values = return_values.merge(ret_val)
+
+        return True, state, return_values
