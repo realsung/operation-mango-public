@@ -6,9 +6,13 @@
 
 [X] Custom 함수 RDA
 
-[ ] Pattern Matching(Bindiff,  
+[X] Pattern Matching(Bindiff)
 
-[ ] Source 함수 주소 알아내기
+[ ] 모든 Input(Source) Symbol 바이너리 찾기(Arm, Mips, etc..)
+
+[ ] Strip된 바이너리에 전수 조사(약 20,000개) Linux 기본 파일시스템 바이너리 제외
+
+[ ] json 형태로 저장
 
 # Reference
 
